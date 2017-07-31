@@ -8,10 +8,10 @@ import de.g00fy2.imchathistory.app.di.ActivityComponent;
  * Created by Thomas Wirth on 23.05.2017.
  */
 
-@PerFragment @Component(modules = StartModule.class, dependencies = ActivityComponent.class)
+@PerFragment @Component(dependencies = ActivityComponent.class, modules = StartModule.class)
 public interface StartComponent {
 
-  void inject(StartContract fragment);
+  void inject(StartFragment view);
 
-  void inject(StartPresenter presenter);
+  void inject(StartPresenterImpl presenter);
 }

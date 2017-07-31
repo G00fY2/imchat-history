@@ -3,6 +3,7 @@ package de.g00fy2.imchathistory.app.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import de.g00fy2.imchathistory.R;
 import de.g00fy2.imchathistory.app.MyApplication;
 import de.g00fy2.imchathistory.app.Navigator;
@@ -19,16 +20,18 @@ import java.lang.annotation.Annotation;
 public abstract class BaseActivity extends AppCompatActivity {
 
   protected ActivityComponent activityComponent;
+  private Unbinder unbinder;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    ButterKnife.bind(this);
+    unbinder = ButterKnife.bind(this);
     initializeInjector();
   }
 
   @Override protected void onDestroy() {
     super.onDestroy();
+    unbinder.unbind();
   }
 
   private void initializeInjector() {
@@ -55,7 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     if (annotation != null) {
       return ((Layout) annotation).value();
     } else {
-      throw new IllegalStateException("You must provide a layout via the @Layout annotation");
+      throw new IllegalStateException("No layout resource found");
     }
   }
 }

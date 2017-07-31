@@ -1,5 +1,6 @@
 package de.g00fy2.imchathistory.app.di;
 
+import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import de.g00fy2.imchathistory.app.MyApplication;
@@ -12,13 +13,17 @@ import javax.inject.Singleton;
 @Module
 public class ApplicationModule {
 
-    private de.g00fy2.imchathistory.app.MyApplication MyApplication;
+    private MyApplication application;
 
-    public ApplicationModule(MyApplication MyApplication) {
-        this.MyApplication = MyApplication;
+    public ApplicationModule(MyApplication application) {
+        this.application = application;
     }
 
     @Provides @Singleton MyApplication provideApplication() {
-        return MyApplication;
+        return application;
+    }
+
+    @Provides @Singleton public Context provideContext() {
+        return application;
     }
 }

@@ -13,21 +13,21 @@ import de.g00fy2.imchathistory.app.annotations.PerActivity;
 
 @Module public class ActivityModule {
 
-  private BaseActivity baseActivity;
+  private BaseActivity activity;
 
-  public ActivityModule(BaseActivity baseActivity) {
-    this.baseActivity = baseActivity;
+  public ActivityModule(BaseActivity activity) {
+    this.activity = activity;
   }
 
   @Provides @PerActivity BaseActivity provideBaseActivity() {
-    return baseActivity;
+    return activity;
   }
 
   @Provides @PerActivity Context provideContext() {
-    return baseActivity;
+    return activity;
   }
 
   @Provides @PerActivity Navigator provideNavigator() {
-    return new Navigator(baseActivity);
+    return new Navigator(activity);
   }
 }

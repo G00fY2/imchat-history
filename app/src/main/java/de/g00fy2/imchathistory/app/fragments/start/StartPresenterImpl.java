@@ -8,22 +8,25 @@ import javax.inject.Inject;
  * Created by Thomas Wirth on 23.05.2017.
  */
 
-public class StartPresenterImpl extends BasePresenterImpl implements
-    de.g00fy2.imchathistory.app.fragments.start.StartPresenter {
+public class StartPresenterImpl extends BasePresenterImpl implements StartContract.StartPresenter {
 
-  @Inject StartFragment view;
+  @Inject StartContract.StartView view;
+
   @Inject AssetController assetController;
+
+  @Inject public StartPresenterImpl() {
+
+  }
 
   @Override public void onResume() {
     super.onResume();
+
+    String filePath = "jj_tw_history";
+    countHTMLFiles(filePath);
   }
 
-  @Override public void onStop() {
-    super.onStop();
-  }
-
-  @Override public int countHTMLFiles(String path) {
-    //return assetController.countHTMLFiles(path);
-    return 0;
+  @Override public void countHTMLFiles(String path) {
+    bind(assetController.countHTMLFiles(path)
+        .subscribe(view::setCountText, Throwable::printStackTrace));
   }
 }

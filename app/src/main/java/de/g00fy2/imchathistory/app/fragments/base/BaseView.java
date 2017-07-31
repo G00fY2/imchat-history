@@ -5,10 +5,4 @@ package de.g00fy2.imchathistory.app.fragments.base;
  */
 
 public interface BaseView {
-
-  void setupToolbar();
-
-  void initializeViews();
-
-  boolean onBackPressed();
 }

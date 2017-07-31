@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.g00fy2.imchathistory.de.g00fy2.imchathistory.activities.MainActivity"
+    tools:context="de.g00fy2.imchathistory.app.activities.MainActivity"
     >
 
   <RelativeLayout

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import de.g00fy2.imchathistory.app.activities.BaseActivity;
 import de.g00fy2.imchathistory.app.annotations.Layout;
 import de.g00fy2.imchathistory.app.annotations.Title;
@@ -18,24 +19,33 @@ import java.lang.annotation.Annotation;
  */
 
 public abstract class BaseFragment extends Fragment implements BaseView {
+
   private BasePresenter presenter;
+  private Unbinder unbinder;
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    this.presenter = registerPresenter();
   }
 
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View view = inflater.inflate(getLayoutResId(), container, false);
-    ButterKnife.bind(this, view);
+    unbinder = ButterKnife.bind(this, view);
 
     return view;
   }
 
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    initializeViews();
+    if (presenter != null) {
+      presenter.onCreate();
+    }
+  }
+
   @Override public void onResume() {
     super.onResume();
-    initializeViews();
-    setupToolbar();
 
     if (presenter != null) {
       presenter.onResume();
@@ -43,20 +53,25 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     ActionBar toolbar = getBaseActivity().getSupportActionBar();
     if (toolbar != null) {
-      toolbar.setTitle(getTitle());
+      toolbar.setTitle(setTitle());
     }
   }
 
-  @Override public void setupToolbar() {
+  @Override public void onPause() {
+    super.onPause();
+    if (presenter != null) {
+      presenter.onPause();
+    }
   }
 
-  @Override public boolean onBackPressed() {
-    return false;
+  @Override public void onDestroy() {
+    super.onDestroy();
+    unbinder.unbind();
   }
 
-  public void setPresenter(BasePresenter presenter) {
-    this.presenter = presenter;
-  }
+  protected abstract void initializeViews();
+
+  protected abstract BasePresenter registerPresenter();
 
   private int getLayoutResId() {
     Annotation annotation = this.getClass().getAnnotation(Layout.class);
@@ -67,7 +82,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     }
   }
 
-  private String getTitle() {
+  private String setTitle() {
     Annotation annotation = this.getClass().getAnnotation(Title.class);
     if (annotation != null) {
       int stringResId = ((Title) annotation).value();
