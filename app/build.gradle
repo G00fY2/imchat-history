@@ -23,12 +23,24 @@ android {
   }
 }
 
+ext {
+  supportLibraryVersion = '26.0.0'
+  roomLibraryVersion = '1.0.0-alpha5'
+}
+
 dependencies {
+
+
+
   compile fileTree(include: ['*.jar'], dir: 'libs')
 
-  // google libs
-  compile 'com.android.support:appcompat-v7:26.0.0'
-  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  // support libs
+  compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+
+  // db
+  compile "android.arch.persistence.room:runtime:$roomLibraryVersion"
+  annotationProcessor "android.arch.persistence.room:compiler:$roomLibraryVersion"
+  compile "android.arch.persistence.room:rxjava2:$roomLibraryVersion"
 
   // rx java
   compile 'io.reactivex.rxjava2:rxjava:2.1.2'
